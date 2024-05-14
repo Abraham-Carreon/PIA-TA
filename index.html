@@ -1,12 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html data-theme="dark" lang="en">
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Automata de Pila</title>
 </head>
 <body>
-    
+    <div class="block content" data-theme="dark">
+        <h3 class="has-text-centered">Automata de Pila</h3>
+
+        <form class="box">
+            <div class="field">
+              <label class="label">Ingrese su cadena</label>
+              <div class="control">
+                <input id="cadena" class="input" type="text" placeholder="" />
+              </div>
+            </div>
+          
+            <button id="aceptar" class="button is-primary">Aceptar</button>
+          </form>
+
+    </div>
+
+    <div class="box">
+        <h6 class=""> Pila </h6> <br>
+        <h3 id="pila">Z |</h3>
+    </div>
+    <div class="box">
+      <h3 id="res"></h3>
+    </div>
 </body>
 <script src="/script.js"></script>
 </html>
