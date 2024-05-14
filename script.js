@@ -18,14 +18,14 @@ function eventListener()
 
 eventListener()
     
-function process(e)
+async function process(e)
 {
     let validar = cadena.value
     validar = String(validar).split("")
     let arr = [0]
     let c = []
 
-    validar.forEach(ele => ele == "a" ? arr.push(1) : ele == "b" ? arr.push(2) : ele == "c" ? c.push(3) : arr.push(4))
+    await validar.forEach(ele => ele == "a" ? arr.push(1) : ele == "b" ? arr.push(2) : ele == "c" ? c.push(3) : arr.push(4))
     
     // Cadena vacia
     if (arr.length == 1)
@@ -33,8 +33,69 @@ function process(e)
             arr.push("vacia")
             mensaje(arr, c)
         }
+
     // Pila que no termine con b
-    if (arr[arr.at(-1)] == 1 || arr[arr.at(-1)] == 4) c.pop()
+    if (arr[arr.length-1] == 1 || arr[arr.length-1] == 4) 
+        {
+            p.textContent = "Z |"
+
+            arr.forEach((e, i) => 
+            {
+                setTimeout(() => 
+                {
+                    mostrarPila(e)    
+                }, i * 1000);
+            })
+
+            return mensaje(arr, c)
+        }
+
+    // Obtener la primera b
+    let pB = 0
+    for (let i = 0; i <= arr.length - 1; i++) 
+    {
+        if (arr[i] == 2) 
+        {
+            pB = i
+        }
+    
+    }
+
+    // Revisar que no haya otro caracter entre la b y la c
+    for (let i = pB; i < arr.length - 1 ; i++) 
+    {
+        if (arr[i] != 2) 
+        {
+            p.textContent = "Z |"
+
+            arr.forEach((e, i) => 
+                {
+                    setTimeout(() => 
+                    {
+                        mostrarPila(e)    
+                    }, i * 1000);
+                })
+            return mensaje(arr, c)
+        }
+    }
+
+    // Revisar que no haya otro caracter entre la a y la b
+    for (let i = 1; i < pB; i++) 
+    {
+        if (arr[i] != 1) 
+        {
+            p.textContent = "Z |"
+
+            arr.forEach((e, i) => 
+                {
+                    setTimeout(() => 
+                    {
+                        mostrarPila(e)    
+                    }, i * 1000);
+                })
+            return mensaje(arr, c)
+        }
+    }
     
     pila(arr, c)
     
@@ -92,13 +153,7 @@ function desapilado(arr,c, b=0)
 
         if ((arr[index] == 2 && c.length > 0) && b == 0) 
         {
-            console.log(arr[index])
             let b = 0
-            const a = arr.findIndex(n => {
-                if (n == index) {
-                    arr[n - 1] == 1 ? b = 1 : b = 0
-                }
-            })
             arr.pop()
             c.pop()
 
@@ -107,12 +162,11 @@ function desapilado(arr,c, b=0)
             }
             setTimeout(() => 
             {
-                return desapilado(arr, c, b)
+                return desapilado(arr, c, b=1)
             }, index * 1000);
         }
         else if ((arr[index] == 1 && c.length > 0) && b == 1) 
         {
-            console.log(arr[index])
             arr.pop()
             c.pop()
             setTimeout(() => 
