@@ -8,10 +8,8 @@ const res = document.getElementById("res")
 
 function eventListener()
 {
-    
     boton.addEventListener("click", (e) => 
     {
-        res.textContent = ""
         e.preventDefault();
         process()  
     })
@@ -20,7 +18,7 @@ function eventListener()
 
 eventListener()
     
-async function process(e)
+async function process()
 {
     let validar = cadena.value
     validar = String(validar).split("")
@@ -29,28 +27,18 @@ async function process(e)
 
     await validar.forEach(ele => ele == "a" ? arr.push(1) : ele == "b" ? arr.push(2) : ele == "c" ? c.push(3) : arr.push(4))
     
-    // Cadena vacia
-    if (arr.length == 1)
+    // Cadena vacia o con solo un caracter
+    if (arr.length == 1 || arr.length == 2) 
         {
-            arr.push("vacia")
-            mensaje(arr, c)
+            arr.push(0)
+            return cicloPila(arr, c)
         }
+    
+    // Revisar que venga una a
+    if (arr[1] != 1) return cicloPila(arr, c)
 
     // Pila que no termine con b
-    if (arr[arr.length-1] == 1 || arr[arr.length-1] == 4) 
-        {
-            p.textContent = "Z |"
-
-            arr.forEach((e, i) => 
-            {
-                setTimeout(() => 
-                {
-                    mostrarPila(e)    
-                }, i * 1000);
-            })
-
-            return mensaje(arr, c)
-        }
+    if (arr[arr.length-1] == 1 || arr[arr.length-1] == 4) return cicloPila(arr, c)
 
     // Obtener la primera b
     let pB = 0
@@ -64,61 +52,20 @@ async function process(e)
     
     }
 
-    // Revisar que no haya otro caracter entre la b y la c
-    for (let i = pB; i < arr.length - 1 ; i++) 
-    {
-        if (arr[i] != 2) 
-        {
-            p.textContent = "Z |"
-
-            arr.forEach((e, i) => 
-                {
-                    setTimeout(() => 
-                    {
-                        mostrarPila(e)    
-                    }, i * 1000);
-                })
-            return mensaje(arr, c)
-        }
-    }
-
     // Revisar que no haya otro caracter entre la a y la b
     for (let i = 1; i < pB - 1; i++) 
     {
-        console.log(pB)
-        if (arr[i] != 1) 
-        {
-            console.log(i)
-            p.textContent = "Z |"
-
-            arr.forEach((e, i) => 
-                {
-                    setTimeout(() => 
-                    {
-                        mostrarPila(e)    
-                    }, i * 1000);
-                })
-            return mensaje(arr, c)
-        }
+        if (arr[i] != 1) return cicloPila(arr, c)
     }
     
+    // Revisar que no haya otro caracter entre la b y la c
+    for (let i = pB; i < arr.length - 1 ; i++) 
+    {
+        if (arr[i] != 2) return cicloPila(arr, c)
+    }
+
     await pila(arr, c)
     
-}
-
-function mensaje(arr, c)
-{
-    if (arr.length > 1 || c.length > 0 ) 
-        {
-            res.classList = "has-text-danger "
-            return res.textContent = "Cadena Invalida"
-        }
-        else 
-        {
-            res.classList = "has-text-success "
-
-            return res.textContent = "Cadena Valida"
-        }
 }
 
 function pila(arr, c)
@@ -183,6 +130,20 @@ function desapilado(arr,c, b=0)
     return mensaje(arr, c)
 }
 
+function cicloPila(arr, c)
+{
+    res.textContent = ""
+    p.textContent = "Z |"
+
+    arr.forEach((e, i) => 
+    {
+        setTimeout(() => 
+        {
+            mostrarPila(e)
+        }, i * 1000);
+    })
+    return mensaje(arr, c)
+}
 
 function mostrarPila(ele)
 {
@@ -198,4 +159,19 @@ function mostrarPila(ele)
     {
         p.textContent += "X |"
     }     
+}
+
+function mensaje(arr, c)
+{
+    if (arr.length > 1 || c.length > 0 ) 
+        {
+            res.classList = "has-text-danger "
+            return res.textContent = "Cadena Invalida"
+        }
+        else 
+        {
+            res.classList = "has-text-success "
+
+            return res.textContent = "Cadena Valida"
+        }
 }
