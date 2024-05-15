@@ -8,8 +8,10 @@ const res = document.getElementById("res")
 
 function eventListener()
 {
+    
     boton.addEventListener("click", (e) => 
     {
+        res.textContent = ""
         e.preventDefault();
         process()  
     })
@@ -57,6 +59,7 @@ async function process(e)
         if (arr[i] == 2) 
         {
             pB = i
+            break
         }
     
     }
@@ -80,10 +83,12 @@ async function process(e)
     }
 
     // Revisar que no haya otro caracter entre la a y la b
-    for (let i = 1; i < pB; i++) 
+    for (let i = 1; i < pB - 1; i++) 
     {
+        console.log(pB)
         if (arr[i] != 1) 
         {
+            console.log(i)
             p.textContent = "Z |"
 
             arr.forEach((e, i) => 
@@ -97,7 +102,7 @@ async function process(e)
         }
     }
     
-    pila(arr, c)
+    await pila(arr, c)
     
 }
 
@@ -138,6 +143,7 @@ function pila(arr, c)
 
 function desapilado(arr,c, b=0)
 {
+    res.textContent = ""
     p.textContent = "Z |"
     console.log("Pila :",arr)
     console.log("C :",c)
@@ -148,18 +154,15 @@ function desapilado(arr,c, b=0)
         mostrarPila(arr[i])
     }
     
-    for (let index = len; index >= 0; index--) {
-
-
+    for (let index = len; index >= 0; index--) 
+    {
         if ((arr[index] == 2 && c.length > 0) && b == 0) 
         {
             let b = 0
             arr.pop()
             c.pop()
 
-            if (index == 1 && arr.length == 1) {
-                return res.textContent = "Cadena Invalida"
-            }
+            
             setTimeout(() => 
             {
                 return desapilado(arr, c, b=1)
@@ -177,7 +180,7 @@ function desapilado(arr,c, b=0)
         }
     }
 
-        return mensaje(arr, c)
+    return mensaje(arr, c)
 }
 
 
